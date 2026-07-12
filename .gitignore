@@ -1,0 +1,10 @@
+# OpenSCAD
+*.bak
+*.scad~
+# Slicer / build artifacts
+*.3mf
+*.gcode
+*.gcode.3mf
+# OS
+.DS_Store
+Thumbs.db
