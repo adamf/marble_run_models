@@ -8,3 +8,6 @@
 # OS
 .DS_Store
 Thumbs.db
+
+# Transient render output (build.sh writes to stl/ and images/)
+build/
