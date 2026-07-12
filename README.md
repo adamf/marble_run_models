@@ -1,5 +1,7 @@
 # marble_run_models
 
+![build-models](https://github.com/USERNAME/marble_run_models/actions/workflows/build.yml/badge.svg)
+
 3D-printable models for translucent OEM marble runs (National Geographic
 and similar). Parametric OpenSCAD source plus ready-to-slice STLs.
 
@@ -45,6 +47,26 @@ Prints flat, pegs up, **no supports**.
 | `grid_x`, `grid_y` | Pegs per tile |
 | `peg_h` | Peg height / grip depth |
 | `tab_tol` | Tightness of the plate-to-plate joint |
+
+## Always-current models (CI)
+
+A GitHub Actions workflow (`.github/workflows/build.yml`) re-renders the
+STLs from the parametric source on every push that touches `src/`, then
+commits the fresh models back into `stl/` and refreshes the preview images.
+So the workflow is:
+
+1. Edit a parameter in `src/marble_run_baseplate.scad` (e.g. `peg_od`
+   after calibrating, or `grid_x`/`pitch`).
+2. Commit and push.
+3. A minute later, `stl/` holds the updated, ready-to-slice file — pulled
+   straight into Bambu Studio, sliced in one click, sent to the printer.
+
+The STLs are also attached to each run as downloadable **artifacts**
+(Actions tab → latest run → *print-ready-stls*).
+
+Run the same render locally any time with `./build.sh` (needs OpenSCAD).
+
+> Note: replace `USERNAME` in the badge URL above with your GitHub handle.
 
 ## License
 

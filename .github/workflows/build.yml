@@ -1,0 +1,50 @@
+name: build-models
+
+# Re-render print-ready STLs whenever the parametric source changes,
+# then commit the fresh models back so the repo always holds a
+# ready-to-slice file (and upload them as downloadable artifacts).
+
+on:
+  push:
+    branches: [ main ]
+    # Only source changes trigger a build — not the commit CI makes itself.
+    paths:
+      - 'src/**'
+      - 'build.sh'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openscad xvfb
+
+      - name: Render models
+        run: ./build.sh
+
+      - name: Upload STLs as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: print-ready-stls
+          path: stl/*.stl
+
+      - name: Commit refreshed models
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add stl images
+          if git diff --cached --quiet; then
+            echo "Models unchanged — nothing to commit."
+          else
+            git commit -m "ci: refresh print-ready models [skip ci]"
+            git push
+          fi
