@@ -28,8 +28,10 @@ pitch        = 30;      // <-- center-to-center spacing (mm). Set to your
                         //     horizontal piece, or use tube OD + ~1mm.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
-peg_od       = 25.4;    // <-- CALIBRATE. Outer dia of peg = female-socket
-                        //     ID of your tubes minus a snug clearance.
+peg_od       = 24.0;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
+                        //     firm/snug fit. 23.5 is slightly looser.
+                        //     Outer dia of peg = female-socket ID of your
+                        //     tubes minus a snug clearance.
 peg_wall     = 1.8;     // peg wall thickness (hollow peg flexes = grip)
 peg_h        = 8;       // how far the peg sticks up
 peg_top_cham = 1.2;     // lead-in chamfer at peg tip (easier to seat)
@@ -158,13 +160,17 @@ module tile() {
         }
 
         // ---- connector SOCKETS on -X and -Y edges ----
+        // socket3d() opens toward +Y from y=0, so it must be aimed INTO the
+        // plate. On -Y edge that means no rotation; on -X edge rotate -90
+        // around Z so +Y -> +X. (Bug: +90/+180 aimed sockets outward and
+        // left the edges with tabs but no pockets.)
         if (connectors_on) {
             for (j=[0:grid_y-1]) if (is_conn(j))        // -X (left) edge
                 translate([0, (j+0.5)*pitch, 0])
-                    rotate([0,0,90]) socket3d();
+                    rotate([0,0,-90]) socket3d();
             for (i=[0:grid_x-1]) if (is_conn(i))        // -Y (front) edge
                 translate([(i+0.5)*pitch, 0, 0])
-                    rotate([0,0,180]) socket3d();
+                    socket3d();
         }
     }
 }
