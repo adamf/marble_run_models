@@ -21,22 +21,26 @@
 PART = "tile";          // "tile"  or  "calibration"
 
 // ---------- GRID ----------
-grid_x       = 6;       // pegs across
-grid_y       = 6;       // pegs deep
-pitch        = 30;      // <-- center-to-center spacing (mm). HALF the user's
-                        //     span/ramp module (~60mm foot-to-foot), so a
-                        //     span sits with its feet on pegs 2 apart. Grid
-                        //     continuity (pegs at pitch/2 from every edge)
-                        //     means a span also crosses tile seams cleanly:
-                        //     A's last peg is 15mm from the seam and B's
-                        //     first peg is 15mm past it -> 60mm end-to-end.
-                        //     Don't go below 30mm; peg_od (~24) would make
-                        //     adjacent pegs collide.
+grid_x       = 4;       // pegs across
+grid_y       = 4;       // pegs deep
+pitch        = 50;      // <-- center-to-center spacing (mm). HALF the user's
+                        //     span/ramp module (measured 100mm foot-to-foot
+                        //     center-to-center), so a span sits with its
+                        //     feet on pegs 2 apart. Grid continuity (pegs
+                        //     at pitch/2 from every edge) means the same
+                        //     span also crosses tile seams: A's last peg
+                        //     sits 25mm from the seam and B's second peg
+                        //     sits 75mm past it -> 100mm end-to-end.
+                        //     Don't go below 50mm at this span length:
+                        //     span would then need pegs >2 apart and
+                        //     tighter pitches make peg/tube-foot clearance
+                        //     unworkable.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
-peg_od       = 23.9;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
-                        //     firm/snug fit. Was 24.0; shaved 0.1 for a
-                        //     touch more give on/off.
+peg_od       = 23.8;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
+                        //     firm/snug fit. Progression: 25.4 -> 24.0 ->
+                        //     23.9 -> 23.8 as the user dialed in a slightly
+                        //     easier on/off.
                         //     Outer dia of peg = female-socket ID of your
                         //     tubes minus a snug clearance.
 peg_wall     = 1.8;     // peg wall thickness (hollow peg flexes = grip)
@@ -56,10 +60,11 @@ edge_cham    = 0.8;     // top-perimeter chamfer (nicer to handle)
 
 // ---------- TILE-TO-TILE CONNECTORS (jigsaw) ----------
 connectors_on   = true;
-conn_cells      = [1, 4];  // which edge grid-cells become connectors
+conn_cells      = [1, 2];  // which edge grid-cells become connectors
                            // (0-indexed). Those edge pegs are omitted to
-                           // make room. [1,4] = 2 per edge on a 6-wide,
-                           // symmetric and clear of the corners.
+                           // make room. [1,2] = 2 per edge on a 4-wide,
+                           // the two interior cells (corners 0 and 3 kept
+                           // so each tile still has pegs at its corners).
 tab_reach   = 12;       // how far a tab sticks out
 tab_neck_w  = 8;        // neck width
 tab_head_d  = 10;       // head diameter (>neck = it catches). Kept only

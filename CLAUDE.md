@@ -49,15 +49,17 @@ get a fresh print-ready STL in the repo.
 - Key params: `peg_od`, `pitch`, `grid_x`/`grid_y`, `peg_h`, `tab_tol`.
 
 ## Calibration (measured on the user's Bambu)
-- **`peg_od = 23.9`** — firm/snug fit, shaved from 24.0 for a little more
-  give on/off. `23.5` is a looser fallback. This number bakes in the user's
-  printer tolerance; trust it over generic values.
-- **`pitch = 30`, grid `6×6`** → 180×180mm tile, 36 pegs. Pitch is HALF
-  the span/ramp module (~60mm foot-to-foot), so a span sits with its feet
-  on pegs 2 apart. Grid continuity means the same 60mm span also fits
-  across tile seams: A's last peg sits 15mm from the seam and B's first
-  peg 15mm past it, distance 60mm. Don't shrink pitch below 30mm — pegs
-  (~Ø24) would collide with each other.
+- **`peg_od = 23.8`** — firm/snug fit. Progression 25.4 → 24.0 → 23.9 →
+  23.8 as the user dialed in a slightly easier on/off. This number bakes
+  in the user's printer tolerance; trust it over generic values.
+- **`pitch = 50`, grid `4×4`** → 200×200mm tile, 16 pegs. Pitch is HALF
+  the user's span/ramp module (**measured 100mm foot-to-foot center-to-
+  center** — earlier iterations wrongly assumed 60mm from the photo). A
+  span sits with its feet on pegs 2 apart. Grid continuity means the same
+  100mm span also fits across tile seams: A's last peg sits 25mm from the
+  seam and B's second peg 75mm past it, distance 100mm. Don't shrink
+  pitch further: it would demand span-feet on pegs 3+ apart, and the
+  resulting tighter pitch would make peg/tube-foot clearance unworkable.
 - **Internal-only flare, no outer lip.** Earlier revisions flared each
   peg's base outward (`peg_skirt`) for strength; the user pulled that
   reinforcement inside so the outer diameter stays flat and tube feet seat
