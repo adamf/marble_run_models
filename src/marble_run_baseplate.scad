@@ -21,13 +21,17 @@
 PART = "tile";          // "tile"  or  "calibration"
 
 // ---------- GRID ----------
-grid_x       = 5;       // pegs across
-grid_y       = 5;       // pegs deep
-pitch        = 60;      // <-- center-to-center spacing (mm). Matches the
-                        //     span/ramp module in the user's set: each foot
-                        //     of a span piece lands on an adjacent peg.
-                        //     Measure foot-to-foot of a horizontal piece to
-                        //     verify for other sets.
+grid_x       = 6;       // pegs across
+grid_y       = 6;       // pegs deep
+pitch        = 30;      // <-- center-to-center spacing (mm). HALF the user's
+                        //     span/ramp module (~60mm foot-to-foot), so a
+                        //     span sits with its feet on pegs 2 apart. Grid
+                        //     continuity (pegs at pitch/2 from every edge)
+                        //     means a span also crosses tile seams cleanly:
+                        //     A's last peg is 15mm from the seam and B's
+                        //     first peg is 15mm past it -> 60mm end-to-end.
+                        //     Don't go below 30mm; peg_od (~24) would make
+                        //     adjacent pegs collide.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
 peg_od       = 23.9;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
@@ -52,9 +56,10 @@ edge_cham    = 0.8;     // top-perimeter chamfer (nicer to handle)
 
 // ---------- TILE-TO-TILE CONNECTORS (jigsaw) ----------
 connectors_on   = true;
-conn_cells      = [1, 3];  // which edge grid-cells become connectors
+conn_cells      = [1, 4];  // which edge grid-cells become connectors
                            // (0-indexed). Those edge pegs are omitted to
-                           // make room. [1,3] = 2 per edge on a 5-wide.
+                           // make room. [1,4] = 2 per edge on a 6-wide,
+                           // symmetric and clear of the corners.
 tab_reach   = 12;       // how far a tab sticks out
 tab_neck_w  = 8;        // neck width
 tab_head_d  = 10;       // head diameter (>neck = it catches). Kept only

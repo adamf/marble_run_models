@@ -52,10 +52,12 @@ get a fresh print-ready STL in the repo.
 - **`peg_od = 23.9`** — firm/snug fit, shaved from 24.0 for a little more
   give on/off. `23.5` is a looser fallback. This number bakes in the user's
   printer tolerance; trust it over generic values.
-- **`pitch = 60`** — matches the user's span/ramp module so each foot of a
-  span piece lands on an adjacent peg (verified against a Nat-Geo green
-  span photo). Note: a 5×5 tile at 60mm pitch is 300×300mm — fits an H2D
-  bed but is a long print; consider dropping `grid_x`/`grid_y` to 3 or 4.
+- **`pitch = 30`, grid `6×6`** → 180×180mm tile, 36 pegs. Pitch is HALF
+  the span/ramp module (~60mm foot-to-foot), so a span sits with its feet
+  on pegs 2 apart. Grid continuity means the same 60mm span also fits
+  across tile seams: A's last peg sits 15mm from the seam and B's first
+  peg 15mm past it, distance 60mm. Don't shrink pitch below 30mm — pegs
+  (~Ø24) would collide with each other.
 - **Internal-only flare, no outer lip.** Earlier revisions flared each
   peg's base outward (`peg_skirt`) for strength; the user pulled that
   reinforcement inside so the outer diameter stays flat and tube feet seat
