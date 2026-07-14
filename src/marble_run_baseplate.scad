@@ -21,20 +21,23 @@
 PART = "tile";          // "tile"  or  "calibration"
 
 // ---------- GRID ----------
-grid_x       = 4;       // pegs across
-grid_y       = 4;       // pegs deep
-pitch        = 50;      // <-- center-to-center spacing (mm). HALF the user's
-                        //     span/ramp module (measured 100mm foot-to-foot
-                        //     center-to-center), so a span sits with its
-                        //     feet on pegs 2 apart. Grid continuity (pegs
-                        //     at pitch/2 from every edge) means the same
-                        //     span also crosses tile seams: A's last peg
-                        //     sits 25mm from the seam and B's second peg
-                        //     sits 75mm past it -> 100mm end-to-end.
-                        //     Don't go below 50mm at this span length:
-                        //     span would then need pegs >2 apart and
-                        //     tighter pitches make peg/tube-foot clearance
-                        //     unworkable.
+grid_x       = 6;       // pegs across
+grid_y       = 6;       // pegs deep
+span_mod     = 100;     // measured span/ramp foot-to-foot center-to-center
+subs_per_span = 3;      // pegs the span spans (feet land on pegs
+                        //     subs_per_span cells apart, with subs-1
+                        //     intermediate support pegs sitting under the
+                        //     span body). Denser = more column-support
+                        //     pegs. Limit: pitch > peg_od (no overlap), so
+                        //     subs_per_span < span_mod/peg_od ~= 4.2, i.e.
+                        //     max 4 (but 4 leaves only ~1mm gap between
+                        //     peg edges - risky to print). 3 is comfy.
+pitch        = span_mod / subs_per_span;
+                        // == 100/3 = 33.333mm. Grid continuity (pegs at
+                        // pitch/2 from every edge) means a span also fits
+                        // across a seam: A's last peg sits pitch/2 from
+                        // the seam, then N-1 intermediate pegs on B, then
+                        // B's N-th peg lands 100mm from A_last.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
 peg_od       = 23.8;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
@@ -60,11 +63,10 @@ edge_cham    = 0.8;     // top-perimeter chamfer (nicer to handle)
 
 // ---------- TILE-TO-TILE CONNECTORS (jigsaw) ----------
 connectors_on   = true;
-conn_cells      = [1, 2];  // which edge grid-cells become connectors
+conn_cells      = [1, 4];  // which edge grid-cells become connectors
                            // (0-indexed). Those edge pegs are omitted to
-                           // make room. [1,2] = 2 per edge on a 4-wide,
-                           // the two interior cells (corners 0 and 3 kept
-                           // so each tile still has pegs at its corners).
+                           // make room. [1,4] = 2 per edge on a 6-wide,
+                           // symmetric and clear of the corners.
 tab_reach   = 12;       // how far a tab sticks out
 tab_neck_w  = 8;        // neck width
 tab_head_d  = 10;       // head diameter (>neck = it catches). Kept only

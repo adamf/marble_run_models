@@ -7,8 +7,8 @@ set -euo pipefail
 SCAD="src/marble_run_baseplate.scad"
 mkdir -p stl images
 
-echo ">> 4x4 tile"
-openscad -o stl/marble_run_baseplate_4x4.stl   -D 'PART="tile"'        "$SCAD"
+echo ">> 6x6 tile"
+openscad -o stl/marble_run_baseplate_6x6.stl   -D 'PART="tile"'        "$SCAD"
 echo ">> calibration strip"
 openscad -o stl/marble_run_calibration.stl     -D 'PART="calibration"' "$SCAD"
 

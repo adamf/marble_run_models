@@ -52,14 +52,15 @@ get a fresh print-ready STL in the repo.
 - **`peg_od = 23.8`** — firm/snug fit. Progression 25.4 → 24.0 → 23.9 →
   23.8 as the user dialed in a slightly easier on/off. This number bakes
   in the user's printer tolerance; trust it over generic values.
-- **`pitch = 50`, grid `4×4`** → 200×200mm tile, 16 pegs. Pitch is HALF
-  the user's span/ramp module (**measured 100mm foot-to-foot center-to-
-  center** — earlier iterations wrongly assumed 60mm from the photo). A
-  span sits with its feet on pegs 2 apart. Grid continuity means the same
-  100mm span also fits across tile seams: A's last peg sits 25mm from the
-  seam and B's second peg 75mm past it, distance 100mm. Don't shrink
-  pitch further: it would demand span-feet on pegs 3+ apart, and the
-  resulting tighter pitch would make peg/tube-foot clearance unworkable.
+- **`pitch = 100/3` (~33.33mm), grid `6×6`** → 200×200mm tile, 36 pegs.
+  The plate's primary job is supporting marble-run columns, so peg density
+  matters more than raw peg count per span. Encoded as
+  `pitch = span_mod / subs_per_span` with `span_mod = 100` (measured span
+  foot-to-foot center-to-center) and `subs_per_span = 3`, meaning a span
+  rests on pegs 3 grid-cells apart with 2 intermediate support pegs under
+  its body. Grid continuity still holds across seams. Max
+  `subs_per_span` is 4 (would require pitch=25mm, leaving only ~1mm peg-
+  edge gap — risky to print reliably); 3 gives ~9.5mm gap.
 - **Internal-only flare, no outer lip.** Earlier revisions flared each
   peg's base outward (`peg_skirt`) for strength; the user pulled that
   reinforcement inside so the outer diameter stays flat and tube feet seat
