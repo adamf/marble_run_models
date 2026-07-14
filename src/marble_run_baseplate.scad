@@ -23,20 +23,28 @@ PART = "tile";          // "tile"  or  "calibration"
 // ---------- GRID ----------
 grid_x       = 5;       // pegs across
 grid_y       = 5;       // pegs deep
-pitch        = 30;      // <-- center-to-center spacing (mm). Set to your
-                        //     set's module: measure foot-to-foot of a
-                        //     horizontal piece, or use tube OD + ~1mm.
+pitch        = 60;      // <-- center-to-center spacing (mm). Matches the
+                        //     span/ramp module in the user's set: each foot
+                        //     of a span piece lands on an adjacent peg.
+                        //     Measure foot-to-foot of a horizontal piece to
+                        //     verify for other sets.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
-peg_od       = 24.0;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
-                        //     firm/snug fit. 23.5 is slightly looser.
+peg_od       = 23.9;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
+                        //     firm/snug fit. Was 24.0; shaved 0.1 for a
+                        //     touch more give on/off.
                         //     Outer dia of peg = female-socket ID of your
                         //     tubes minus a snug clearance.
 peg_wall     = 1.8;     // peg wall thickness (hollow peg flexes = grip)
 peg_h        = 8;       // how far the peg sticks up
 peg_top_cham = 1.2;     // lead-in chamfer at peg tip (easier to seat)
-peg_skirt    = 1.6;     // extra radius flare where peg meets plate (strength)
-peg_skirt_h  = 2.0;
+peg_flare_h  = 2.0;     // internal flare at the peg's base: the bore
+                        //     tapers from fully closed at the underside up
+                        //     to the nominal bore radius over this height,
+                        //     then continues straight to the top. The wall
+                        //     is thick at the base for strength, and the
+                        //     outer stays flat at peg_od so tube feet seat
+                        //     flush against the plate (no external lip).
 
 // ---------- BASE ----------
 base_th      = 3.0;     // plate thickness
@@ -71,18 +79,19 @@ eps = 0.01;
 module peg() {
     r  = peg_od/2;
     ri = r - peg_wall;
-    union() {
-        // skirt (conical flare at the bottom for strength)
-        cylinder(h=peg_skirt_h, r1=r+peg_skirt, r2=r);
-        // shaft with hollow bore + top chamfer
-        difference() {
-            union() {
-                cylinder(h=peg_h - peg_top_cham, r=r);
-                translate([0,0,peg_h - peg_top_cham])
-                    cylinder(h=peg_top_cham, r1=r, r2=r-peg_top_cham);
-            }
-            // bore, open at top
-            translate([0,0,peg_skirt_h])
+    // straight outer shaft (no external skirt) + tapered internal bore.
+    difference() {
+        union() {
+            cylinder(h=peg_h - peg_top_cham, r=r);
+            translate([0,0,peg_h - peg_top_cham])
+                cylinder(h=peg_top_cham, r1=r, r2=r-peg_top_cham);
+        }
+        // bore: closed at the underside (r=0) tapering out to ri over
+        // peg_flare_h -> reinforced base without any outer bump; then
+        // straight ri up through and out the top.
+        union() {
+            cylinder(h=peg_flare_h, r1=0, r2=ri);
+            translate([0,0,peg_flare_h - eps])
                 cylinder(h=peg_h+1, r=ri);
         }
     }
@@ -219,18 +228,19 @@ module calibration() {
         }
     }
 }
-// helper: draw a peg with a specific OD
+// helper: draw a peg with a specific OD (mirrors peg())
 module peg_od_override(od) {
     r=od/2; ri=r-peg_wall;
-    union(){
-        cylinder(h=peg_skirt_h, r1=r+peg_skirt, r2=r);
-        difference(){
-            union(){
-                cylinder(h=peg_h-peg_top_cham, r=r);
-                translate([0,0,peg_h-peg_top_cham])
-                    cylinder(h=peg_top_cham, r1=r, r2=r-peg_top_cham);
-            }
-            translate([0,0,peg_skirt_h]) cylinder(h=peg_h+1, r=ri);
+    difference(){
+        union(){
+            cylinder(h=peg_h-peg_top_cham, r=r);
+            translate([0,0,peg_h-peg_top_cham])
+                cylinder(h=peg_top_cham, r1=r, r2=r-peg_top_cham);
+        }
+        union(){
+            cylinder(h=peg_flare_h, r1=0, r2=ri);
+            translate([0,0,peg_flare_h - eps])
+                cylinder(h=peg_h+1, r=ri);
         }
     }
 }

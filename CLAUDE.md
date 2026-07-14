@@ -49,9 +49,19 @@ get a fresh print-ready STL in the repo.
 - Key params: `peg_od`, `pitch`, `grid_x`/`grid_y`, `peg_h`, `tab_tol`.
 
 ## Calibration (measured on the user's Bambu)
-- **`peg_od = 24.0` is the correct fit** — firm, on the tight side. `23.5`
-  is a slightly looser alternative for easier on/off. This number already
-  bakes in the user's printer tolerance, so trust it over generic values.
+- **`peg_od = 23.9`** — firm/snug fit, shaved from 24.0 for a little more
+  give on/off. `23.5` is a looser fallback. This number bakes in the user's
+  printer tolerance; trust it over generic values.
+- **`pitch = 60`** — matches the user's span/ramp module so each foot of a
+  span piece lands on an adjacent peg (verified against a Nat-Geo green
+  span photo). Note: a 5×5 tile at 60mm pitch is 300×300mm — fits an H2D
+  bed but is a long print; consider dropping `grid_x`/`grid_y` to 3 or 4.
+- **Internal-only flare, no outer lip.** Earlier revisions flared each
+  peg's base outward (`peg_skirt`) for strength; the user pulled that
+  reinforcement inside so the outer diameter stays flat and tube feet seat
+  flush. The bore is closed (r=0) at the underside and tapers out to the
+  nominal bore radius over `peg_flare_h` (2mm), then goes straight. Wall
+  is thickest at the base = strongest where the peg meets the plate.
 - `tab_tol` (default 0.40) tunes the plate-to-plate joint: raise toward 0.6
   if tiles are too stiff to press together, lower toward 0.25 if loose.
 
