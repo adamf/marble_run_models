@@ -40,10 +40,10 @@ pitch        = span_mod / subs_per_span;
                         // B's N-th peg lands 100mm from A_last.
 
 // ---------- PEG (the bit that plugs into a tube) ----------
-peg_od       = 23.8;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
+peg_od       = 23.7;    // <-- CALIBRATED for user's Bambu + Nat-Geo tubes:
                         //     firm/snug fit. Progression: 25.4 -> 24.0 ->
-                        //     23.9 -> 23.8 as the user dialed in a slightly
-                        //     easier on/off.
+                        //     23.9 -> 23.8 -> 23.7 as the user dialed in a
+                        //     slightly easier on/off.
                         //     Outer dia of peg = female-socket ID of your
                         //     tubes minus a snug clearance.
 peg_wall     = 1.8;     // peg wall thickness (hollow peg flexes = grip)
