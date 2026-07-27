@@ -11,6 +11,8 @@ echo ">> 6x6 tile"
 openscad -o stl/marble_run_baseplate_6x6.stl   -D 'PART="tile"'        "$SCAD"
 echo ">> calibration strip"
 openscad -o stl/marble_run_calibration.stl     -D 'PART="calibration"' "$SCAD"
+echo ">> single peg post"
+openscad -o stl/marble_run_single_peg.stl      -D 'PART="single"'      "$SCAD"
 
 # Preview renders keep the README images current (needs a virtual display).
 if command -v xvfb-run >/dev/null 2>&1; then

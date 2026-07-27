@@ -18,7 +18,7 @@
 //  peg_od to that number below. Then print the tiles.
 // =====================================================================
 
-PART = "tile";          // "tile"  or  "calibration"
+PART = "tile";          // "tile", "calibration", or "single"
 
 // ---------- GRID ----------
 grid_x       = 6;       // pegs across
@@ -257,6 +257,36 @@ module peg_od_override(od) {
     }
 }
 
+// ================= single peg on a small square plate =================
+// A one-off "post" — same peg geometry as the tile, sitting in the middle
+// of a small square base. Useful for propping up a single tube where a
+// full tile is overkill (e.g. a lone column foot on the desk).
+single_plate_mm = 2.5 * 25.4;   // 2.5 inch square = 63.5mm
+
+module single_peg() {
+    difference() {
+        union() {
+            difference() {
+                cube([single_plate_mm, single_plate_mm, base_th]);
+                if (edge_cham > 0) {
+                    c = edge_cham;
+                    translate([0,0,base_th-c]) {
+                        for (yy=[0, single_plate_mm])
+                            translate([-1, yy, 0]) rotate([45,0,0])
+                                cube([single_plate_mm+2, c*1.5, c*1.5]);
+                        for (xx=[0, single_plate_mm])
+                            translate([xx, -1, 0]) rotate([0,-45,0])
+                                cube([c*1.5, single_plate_mm+2, c*1.5]);
+                    }
+                }
+            }
+            translate([single_plate_mm/2, single_plate_mm/2, base_th - eps])
+                peg();
+        }
+    }
+}
+
 // ================= render =================
-if (PART == "tile")            tile();
+if (PART == "tile")             tile();
 else if (PART == "calibration") calibration();
+else if (PART == "single")      single_peg();
